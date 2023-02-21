@@ -1,5 +1,5 @@
 import {createApp} from 'vue';
-import {Quasar} from 'quasar';
+import {Dialog, LoadingBar, Notify, Quasar} from 'quasar';
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css';
@@ -11,13 +11,26 @@ import 'quasar/src/css/index.sass';
 // and placed in same folder as main.js
 import App from './App.vue';
 import router from "./router/index.js";
+import {createPinia} from "pinia";
 
+const pinia = createPinia();
 const myApp = createApp(App);
-
 myApp.use(Quasar, {
-    plugins: {}, // import Quasar plugins and add here
+    plugins: [Notify, LoadingBar, Dialog], // import Quasar plugins and add here
+    config: {
+        notify: {},
+        loadingBar: {
+            color: 'warning',
+            size: '10px',
+            position: 'bottom'
+        },
+    },
+    animations: 'all'
 });
 
 myApp.use(router);
+
 // Assumes you have a <div id="app"></div> in your index.html
+myApp.use(pinia);
+
 myApp.mount('#app');

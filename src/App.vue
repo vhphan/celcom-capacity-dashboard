@@ -1,6 +1,7 @@
 <script>
-import MainLayout from "./layouts/MainLayout.vue";
-import {parseCookie} from "./utils/myFunctions";
+import MainLayout from "@/layouts/MainLayout.vue";
+import {parseCookie} from "@/utils/myFunctions";
+import {useCapDataStore} from "@/store/capDataStore.js";
 
 export default {
   components: {MainLayout},
@@ -10,6 +11,10 @@ export default {
       document.cookie = "API=" + import.meta.env.VITE_API_KEY + ";";
       console.log(parseCookie(import.meta.env.VITE_COOKIE_STRING));
     }
+
+    const store = useCapDataStore();
+    store.getRegionalCountTrend();
+
   }
 };
 

@@ -243,7 +243,7 @@ export const colorTrace = function (msg, color) {
     console.log("%c" + msg, "color:" + color + ";font-weight:bold;");
 };
 
-export function redirectToLogin(errorMessage) {
+export function redirectToLogin(errorMessage, authLoginUrl) {
     Notify.create({
         message: errorMessage,
         type: 'negative',
@@ -256,7 +256,7 @@ export function redirectToLogin(errorMessage) {
     });
     setTimeout(
         () => {
-            window.location = 'https://ndo-portal.eprojecttrackers.com/login2.php?action=dbv3';
+            window.location = authLoginUrl;
         }
         , 5000);
 }
