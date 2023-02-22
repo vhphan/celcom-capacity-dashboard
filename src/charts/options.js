@@ -55,7 +55,7 @@ export const getRegionalTrendCountChartOptions = (data) => {
         },
         yAxis: {},
         grid: {
-            bottom: 100
+            bottom: 20
         },
         series: series
     };

@@ -84,4 +84,4 @@ const addInterceptor = (instance) => {
 
 const apiNode = addInterceptor(createInstance(BASE_URL_NODE));
 
-export {apiNode};
+export {apiNode, BASE_URL_NODE};

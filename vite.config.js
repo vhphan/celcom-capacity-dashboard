@@ -5,6 +5,7 @@ import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import path from 'path';
 import { basePath } from "./src/constants.js";
 import { fileURLToPath, URL } from "url";
+
 // https://vitejs.dev/config/
 function getBuild() {
     const now = new Date();

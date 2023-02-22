@@ -1,7 +1,6 @@
 <script>
 import MainLayout from "@/layouts/MainLayout.vue";
 import {parseCookie} from "@/utils/myFunctions";
-import {useCapDataStore} from "@/store/capDataStore.js";
 
 export default {
   components: {MainLayout},
@@ -11,9 +10,6 @@ export default {
       document.cookie = "API=" + import.meta.env.VITE_API_KEY + ";";
       console.log(parseCookie(import.meta.env.VITE_COOKIE_STRING));
     }
-
-    const store = useCapDataStore();
-    store.getRegionalCountTrend();
 
   }
 };
@@ -25,4 +21,9 @@ export default {
 </template>
 
 <style>
+/*@import "tabulator-tables/dist/css/tabulator.min.css";*/
+@import "tabulator-tables/dist/css/tabulator_modern.min.css";
+.tabulator {
+  font-size: 0.8rem;
+}
 </style>

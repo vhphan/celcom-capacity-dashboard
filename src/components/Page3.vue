@@ -1,10 +1,12 @@
 <template>
-  <div><h5 class="q-ma-lg">Page 2</h5></div>
+  <div>
+    <h5 class="q-ma-lg">Page 3</h5>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Page2"
+  name: "Page3"
 };
 </script>
 

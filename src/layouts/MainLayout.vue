@@ -3,13 +3,15 @@
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer"/>
+
         <q-toolbar-title
             shrink
         >
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" alt="logo">
           </q-avatar>
-          Title
+          Capacity Dashboard
         </q-toolbar-title>
         <q-tabs align="left">
           <q-route-tab :to="`${basePath}page1`" label="Page One"/>
@@ -19,6 +21,10 @@
       </q-toolbar>
 
     </q-header>
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+      <!-- drawer content -->
+        <filters/>
+    </q-drawer>
 
     <q-page-container class="q-px-md">
 
@@ -32,5 +38,12 @@
 </template>
 <script setup>
 import {basePath} from "../constants.js";
+import {ref} from "vue";
+import Filters from "@/components/Filters.vue";
 
+
+const leftDrawerOpen = ref(true);
+const toggleLeftDrawer = function () {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
 </script>

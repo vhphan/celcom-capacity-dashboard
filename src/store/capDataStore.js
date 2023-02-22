@@ -3,17 +3,20 @@
 import {defineStore} from 'pinia';
 import {apiGetRegionalCountTrend} from "@/api/apiCalls.js";
 import {getRegionalTrendCountChartOptions} from "@/charts/options.js";
+import {agings, issueTags, regions} from "@/constants.js";
 
 export const useCapDataStore = defineStore({
     id: 'capData',
     state: () => ({
         regionalCountTrend: [],
+        worstCellsList: [],
+        selectedRegions: regions,
+        selectedAgings: agings,
+        selectedIssueTags: issueTags,
     }),
     actions: {
-        getRegionalCountTrend() {
-            apiGetRegionalCountTrend().then((data) => {
-                this.regionalCountTrend = data;
-            });
+        async getRegionalCountTrend() {
+            this.regionalCountTrend = await apiGetRegionalCountTrend();
         }
     },
     getters: {
