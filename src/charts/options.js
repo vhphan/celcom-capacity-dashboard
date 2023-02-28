@@ -1,6 +1,10 @@
+import string from "tabulator-tables/src/js/modules/Sort/defaults/sorters/string.js";
+
 export const getRegionalTrendCountChartOptions = (data) => {
     let allYearWeek = data.map(d => d['Wk Year'] + '-' + d['Wk Num']);
+    let allYearWeekPadded = data.map(d => d['Wk Year'] + '-' + String(d['Wk Num']).padStart(2, '0'));
     let xAxisData = [...new Set(allYearWeek)];
+    let xAxisLabels = [...new Set(allYearWeekPadded)];
     let regions = [...new Set(data.map(d => d['Region']))];
     let series = [];
     const emphasisStyle = {
@@ -47,7 +51,7 @@ export const getRegionalTrendCountChartOptions = (data) => {
         },
         tooltip: {},
         xAxis: {
-            data: xAxisData,
+            data: xAxisLabels,
             name: 'X Axis'
             // axisLine: { onZero: true },
             // splitLine: { show: false },
@@ -61,4 +65,62 @@ export const getRegionalTrendCountChartOptions = (data) => {
     };
     return option;
 
+};
+
+export const getPieChartOptions = (data, seriesName, chartTitle) => {
+
+    return {
+        title: {
+            top: '0%',
+            text: chartTitle,
+            left: 'center'
+        },
+        grid: {
+            // left: '3%',
+            // right: '3%',
+            bottom: '0%',
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            top: '10%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: seriesName,
+                type: 'pie',
+                radius: ['30%', '60%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 40,
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                // data: [
+                //     {value: 1048, name: 'Search Engine'},
+                //     {value: 735, name: 'Direct'},
+                //     {value: 580, name: 'Email'},
+                //     {value: 484, name: 'Union Ads'},
+                //     {value: 300, name: 'Video Ads'}
+                // ]
+                data: data
+            }
+        ]
+    };
 };

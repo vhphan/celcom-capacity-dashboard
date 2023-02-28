@@ -1,7 +1,8 @@
 import {TabulatorFull as Tabulator} from 'tabulator-tables';
 import {getCookie} from "@/utils/myFunctions.js";
+import {ref} from "vue";
 
-export function createTabulator(tabulator, tableRef, tableName, tableUrl, additionalOptions = {}, schema = 'capacity') {
+export function createTabulator(tabulator, tableRef, tableBuiltRef, tableName, tableUrl, schema, additionalOptions = {}) {
     tabulator.value = new Tabulator(
         tableRef.value,
         {
@@ -25,17 +26,20 @@ export function createTabulator(tabulator, tableRef, tableName, tableUrl, additi
                 return response; //return the response data to tabulator
             },
 
-            filterMode:"remote", //send filter data to the server instead of processing locally
+            filterMode: "remote", //send filter data to the server instead of processing locally
 
 
             ...additionalOptions
         }
     );
+    tabulator.value.on("tableBuilt", function () {
+        tableBuiltRef.value = true;
+    });
 }
 
 
 //custom max min header filter
-export const minMaxFilterEditor = function(cell, onRendered, success, cancel, editorParams){
+export const minMaxFilterEditor = function (cell, onRendered, success, cancel, editorParams) {
 
     var end;
 
@@ -53,19 +57,19 @@ export const minMaxFilterEditor = function(cell, onRendered, success, cancel, ed
 
     start.value = cell.getValue();
 
-    function buildValues(){
+    function buildValues() {
         success({
-            start:start.value,
-            end:end.value,
+            start: start.value,
+            end: end.value,
         });
     }
 
-    function keypress(e){
-        if(e.keyCode == 13){
+    function keypress(e) {
+        if (e.keyCode == 13) {
             buildValues();
         }
 
-        if(e.keyCode == 27){
+        if (e.keyCode == 27) {
             cancel();
         }
     }
@@ -86,7 +90,7 @@ export const minMaxFilterEditor = function(cell, onRendered, success, cancel, ed
     container.appendChild(end);
 
     return container;
- }
+};
 
 //custom max min filter function
 export const minMaxFilterFunction = (headerValue, rowValue, rowData, filterParams) => {
@@ -95,19 +99,20 @@ export const minMaxFilterFunction = (headerValue, rowValue, rowData, filterParam
     //rowData - the data for the row being filtered
     //filterParams - params object passed to the headerFilterFuncParams property
 
-        if(rowValue){
-            if(headerValue.start != ""){
-                if(headerValue.end != ""){
-                    return rowValue >= headerValue.start && rowValue <= headerValue.end;
-                }else{
-                    return rowValue >= headerValue.start;
-                }
-            }else{
-                if(headerValue.end != ""){
-                    return rowValue <= headerValue.end;
-                }
+    if (rowValue) {
+        if (headerValue.start != "") {
+            if (headerValue.end != "") {
+                return rowValue >= headerValue.start && rowValue <= headerValue.end;
+            } else {
+                return rowValue >= headerValue.start;
+            }
+        } else {
+            if (headerValue.end != "") {
+                return rowValue <= headerValue.end;
             }
         }
+    }
 
     return true; //must return a boolean, true if it passes the filter.
 };
+

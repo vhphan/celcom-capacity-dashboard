@@ -49,7 +49,7 @@ const addInterceptor = (instance) => {
         }
         return response;
     }, function (error) {
-        const errObj = error.toJSON();
+        const errObj = (error.toJSON && error.toJSON()) || error;
         colorTrace('from axios.js', 'red');
         colorTrace(error, 'red');
         triggerNegative({

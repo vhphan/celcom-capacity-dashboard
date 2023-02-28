@@ -40,10 +40,17 @@
 import {basePath} from "../constants.js";
 import {ref} from "vue";
 import Filters from "@/components/Filters.vue";
+import {useCapDataStore} from "@/store/capDataStore.js";
 
 
 const leftDrawerOpen = ref(true);
 const toggleLeftDrawer = function () {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+const store = useCapDataStore();
+
+store.getAvailableYearWeeks();
+
+
+
 </script>

@@ -356,7 +356,6 @@ export function base64SvgToBase64Png(originalBase64, width) {
 
 export function svgToPng(svgStr, filename) {
 
-
     var canvas = document.createElement("canvas");
     canvas.width = 800;
     canvas.height = 500;
