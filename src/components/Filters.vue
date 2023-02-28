@@ -42,9 +42,16 @@
     <div class="bg-grey-2 q-pa-sm rounded-borders ">
 
       <q-table
+          title="Filters Applied"
           :rows="rows"
           :columns="columns"
           row-key="name"
+          hide-pagination
+          flat
+          dense
+          bordered
+          :table-header-style="{ backgroundColor: '#9afafa' }"
+          separator="cell"
       />
 
     </div>
