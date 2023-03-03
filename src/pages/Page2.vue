@@ -4,9 +4,9 @@
   </div>
   <div style="display:flex;" class="q-ma-xs row">
     <worst-cells-table class="col-md-8"/>
-    <div class="col-md-3 q-pt-lg">
-      <aging-pie-chart style="height: 200px; margin-top: 2px;" />
-      <issue-pie-chart style="height: 200px;" class="q-mt-lg"/>
+    <div class="col-md-4 q-pt-lg">
+      <aging-pie-chart class="col-12" style="height: 250px;" />
+      <issue-pie-chart class="col-12" style="height: 250px;"/>
     </div>
   </div>
 </template>

@@ -77,7 +77,8 @@ import {useRoute} from 'vue-router';
 
 export default {
   name: "Filters",
-  setup() {
+  emits: ['filtersApplied'],
+  setup(props, {emit}) {
     const store = useCapDataStore();
     const {worstCellsTableFilters} = storeToRefs(store);
 
@@ -109,6 +110,7 @@ export default {
       store.getIssueCountTrend();
       store.getAgingCountTrend();
       store.getOverallCountAndPercentage();
+      store.applyFiltersClicked = true;
     };
     const route = useRoute()
     const currentRouteName = computed(() => route.name)

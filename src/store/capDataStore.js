@@ -18,6 +18,7 @@ export const useCapDataStore = defineStore('capData', () => {
     const availableYearWeeks = ref([]);
     const worstCellsTableFilters = ref([]);
     const overallCountAndPercentage = ref([]);
+    const applyFiltersClicked = ref(false);
 
     const selectedRegions = ref(regions);
     const selectedAgings = ref(agings);
@@ -110,5 +111,6 @@ export const useCapDataStore = defineStore('capData', () => {
         maxYearWeek,
         selectionToParams,
         worstCellsTableFilters,
+        applyFiltersClicked,
     };
 });

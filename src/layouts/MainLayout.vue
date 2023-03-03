@@ -3,8 +3,8 @@
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer"/>
-
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer">
+        </q-btn>
         <q-toolbar-title
             shrink
         >
@@ -16,14 +16,14 @@
         <q-tabs align="left">
           <q-route-tab :to="`${basePath}page1`" label="Page One"/>
           <q-route-tab :to="`${basePath}page2`" label="Page Two"/>
-<!--          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>-->
+          <!--          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>-->
         </q-tabs>
       </q-toolbar>
 
     </q-header>
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
-        <filters/>
+      <filters/>
     </q-drawer>
 
     <q-page-container class="q-px-md">
@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import {basePath} from "../constants.js";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import Filters from "@/components/Filters.vue";
 import {useCapDataStore} from "@/store/capDataStore.js";
 
@@ -50,5 +50,4 @@ const toggleLeftDrawer = function () {
 
 const store = useCapDataStore();
 store.getAvailableYearWeeks();
-
 </script>

@@ -40,7 +40,7 @@
 <script>
 import {storeToRefs} from 'pinia';
 import {onMounted, computed, ref} from 'vue';
-import {useCapDataStore} from '../store/capDataStore';
+import {useCapDataStore} from '../store/capDataStore.js';
 import PercentageGaugeChart from "@/components/PercentageGaugeChart.vue";
 import SimpleTrendChart from "@/components/SimpleTrendChart.vue";
 

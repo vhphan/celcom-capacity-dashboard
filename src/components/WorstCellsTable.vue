@@ -1,5 +1,5 @@
 <template>
-  <div ref="tableRef" style="height: calc(100vh - 200px);" ></div>
+  <div ref="tableRef" style="height: calc(100vh - 350px);" ></div>
 </template>
 <script>
 
@@ -15,7 +15,7 @@ export default {
     const store = useCapDataStore();
     const tableRef = ref(null);
     const tabulatorRef = ref(null);
-    const {regionalCountTrend, worstCellsTableFilters} = storeToRefs(store);
+    const {regionalCountTrend, worstCellsTableFilters, applyFiltersClicked} = storeToRefs(store);
     const {selectedRegions, selectedAgings, selectedIssueTags} = storeToRefs(store);
     const isTableBuilt = ref(false);
     const tableFilters = ref([]);
@@ -77,13 +77,16 @@ export default {
 
     });
 
-    watch(regionalCountTrend, (newVal, oldVal) => {
-      const {regions, agings, issueTags} = store.selectionToParams();
-      tabulatorRef.value.setFilter([
-        {field: 'Region', type: 'in', value: regions},
-        {field: 'aging', type: 'in', value: agings},
-        {field: 'issue_category', type: 'in', value: issueTags},
-      ]);
+    watch(applyFiltersClicked, (newVal, oldVal) => {
+      if (newVal) {
+        const {regions, agings, issueTags} = store.selectionToParams();
+        tabulatorRef.value.setFilter([
+          {field: 'Region', type: 'in', value: regions},
+          {field: 'aging', type: 'in', value: agings},
+          {field: 'issue_category', type: 'in', value: issueTags},
+        ]);
+        store.applyFiltersClicked = false;
+      }
     });
 
     const unwatch = watch(isTableBuilt, (newVal, oldVal) => {
@@ -100,6 +103,7 @@ export default {
         unwatch();
       }
     });
+
 
 
     return {

@@ -1,9 +1,9 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
-import Page1 from "@/components/Page1.vue";
-import Page2 from "@/components/Page2.vue";
+import Page1 from "@/pages/Page1.vue";
+import Page2 from "@/pages/Page2.vue";
 import {basePath} from "@/constants.js";
-import Page3 from "@/components/Page3.vue";
+import Page3 from "@/pages/Page3.vue";
 
 const routes = [
     {
