@@ -19,11 +19,11 @@ export default {
     const {selectedRegions, selectedAgings, selectedIssueTags} = storeToRefs(store);
     const isTableBuilt = ref(false);
     const tableFilters = ref([]);
-
     const numberColumns = ['aging', 'Average PRB (Normalize)', 'Average user TP 4BH (Mbps) Total', 'Current Sector 4BH volume (GB)'];
 
 
     onMounted(() => {
+      const {regions, agings, issueTags} = store.selectionToParams();
       const addOpts = {
         layout: "fitData",
         headerFilterLiveFilterDelay: 1000,
@@ -51,17 +51,19 @@ export default {
                   column.headerFilterParams = {values: ['Optimize', 'Required Upgrade']};
                   column.headerFilterFunc = 'in';
                 }
-
                 if (column.field === 'issue_category') {
                   column.title = 'Issue Category';
                 }
-
-
               }
           );
 
           return definitions;
         },
+        initialFilter:[
+          {field: 'Region', type: 'in', value: regions},
+          {field: 'aging', type: 'in', value: agings},
+          {field: 'issue_category', type: 'in', value: issueTags},
+        ],
 
       };
       createTabulator(
@@ -100,6 +102,7 @@ export default {
           store.worstCellsTableFilters = filters;
           console.log(filters);
         });
+        store.applyFiltersClicked = false;
         unwatch();
       }
     });
