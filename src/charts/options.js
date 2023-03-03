@@ -33,8 +33,12 @@ export const getRegionalTrendCountChartOptions = (data) => {
     });
 
     const option = {
+        title: {
+            text: 'Count of Congested Sectors'
+        },
         legend: {
             data: regions,
+            top: '10%',
             left: '10%'
         },
         brush: {
@@ -124,3 +128,118 @@ export const getPieChartOptions = (data, seriesName, chartTitle) => {
         ]
     };
 };
+
+export const getGaugeChartOptions = (value, chartTitle, chartColor) => {
+
+    return {
+        title: {
+            text: chartTitle,
+            left: 'center'
+        },
+        series: [
+            {
+                type: 'gauge',
+                itemStyle: {
+                    color: chartColor
+                },
+                progress: {
+                    show: true,
+                    width: 18
+                },
+                axisLine: {
+                    lineStyle: {
+                        width: 18,
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                splitLine: {
+                    length: 15,
+                    lineStyle: {
+                        width: 2,
+                        color: '#999'
+                    }
+                },
+                axisLabel: {
+                    distance: 25,
+                    color: '#999',
+                    fontSize: 12
+                },
+                anchor: {
+                    show: true,
+                    showAbove: true,
+                    size: 25,
+                    itemStyle: {
+                        borderWidth: 10,
+                        // color: chartColor
+                        borderColor: chartColor,
+                    }
+                },
+                title: {
+                    show: false
+                },
+                detail: {
+                    valueAnimation: true,
+                    fontSize: 30,
+                    offsetCenter: [0, '70%']
+                },
+                data: [
+                    {
+                        value
+                    }
+                ]
+            }
+        ]
+    };
+
+
+}
+
+export const getSimpleTrendCountChartOptions = (data, chartTitle,
+                                                xLabel, yLabel, preXValue, postXValue,
+                                                preBarColor = '#a90000',
+                                                postBarColor = '#00a900',
+                                                defaultBarColor = '#9bd4f3') => {
+
+    chartTitle ||= `${yLabel} Trend Count`;
+    let xAxisData = data.map(d => d[xLabel]);
+    let seriesData = data.map((d, i) => ({
+        value: d[yLabel],
+        itemStyle: {
+            color: getColor(xAxisData[i])
+        }
+    }));
+
+    function getColor(xAxisDatum) {
+        if (xAxisDatum === preXValue) {
+            return preBarColor;
+        }
+        if (xAxisDatum === postXValue) {
+            return postBarColor;
+        }
+        return defaultBarColor;
+    }
+
+    return {
+        xAxis: {
+            type: 'category',
+            data: xAxisData
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: seriesData,
+                type: 'bar'
+            }
+        ],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+    };
+}

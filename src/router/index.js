@@ -8,7 +8,7 @@ import Page3 from "@/components/Page3.vue";
 const routes = [
     {
         path: "/:catchAll(.*)",
-        redirect: {name: 'Page1'},
+        redirect: {name: 'Page2'},
         name: 'Others',
     },
     {
@@ -23,11 +23,11 @@ const routes = [
         component: Page2,
     },
 
-    {
-        path: basePath + 'page3',
-        name: 'Page3',
-        component: Page3,
-    },
+    // {
+    //     path: basePath + 'page3',
+    //     name: 'Page3',
+    //     component: Page3,
+    // },
 
 
 ];

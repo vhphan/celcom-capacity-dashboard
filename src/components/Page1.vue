@@ -1,47 +1,121 @@
 <template>
-  <div style="display:flex;" class="q-ma-xs row">
-    <region-count-bar-chart style="height: 300px;" class="col-md-12"/>
-  </div>
-  <div style="display:flex;" class="q-ma-xs row">
-    <worst-cells-table class="col-md-8"/>
-    <div class="col-md-4 q-pt-lg">
-      <aging-pie-chart style="height: 300px; margin-top: 120px;" />
-      <issue-pie-chart style="height: 300px;" class="q-mt-lg"/>
-    </div>
+  <div class="text-h4 q-ma-md text-amber-10">Work in Progress Here!!...</div>
+  <q-card bordered class="full-width q-pa-xs">
+    <q-select outlined v-model="selectedMetric" :options="availableMetrics" label="Select Metric"/>
+    <simple-trend-chart
+        :data="overallCountAndPercentageTrend"
+        chartTitle="Simple Trend Chart"
+        xLabel="year_week"
+        :yLabel="selectedMetric.value"
+        :preXValue="selectedPreYearWeek"
+        :postXValue="selectedPostYearWeek"
+        :preBarColor="preBarColor"
+        :postBarColor="postBarColor"
+        :defaultBarColor="defaultBarColor"
+
+    />
+  </q-card>
+  <div class="q-pa-md row">
+    <q-card class="col-4">
+      <q-select outlined v-model="selectedPreYearWeek" :options="availableYearWeeks" label="Select Year-Week"/>
+      <percentage-gauge-chart
+          class="col-4"
+          :value="preData[0]?.percentage"
+          title="PRE: Percentage Congested"
+          :chart-color="preBarColor"
+      />
+    </q-card>
+    <q-card class="col-4">
+      <q-select outlined v-model="selectedPostYearWeek" :options="availablePostYearWeeks" label="Select Year-Week"/>
+      <percentage-gauge-chart
+          class="col-4"
+          :value="postData[0]?.percentage"
+          title="POST: Percentage Congested"
+          :chart-color="postBarColor"
+      />
+    </q-card>
   </div>
 </template>
 
 <script>
-import AgingPieChart from "@/components/AgingPieChart.vue";
-import RegionCountBarChart from "@/components/RegionCountBarChart.vue";
-import IssuePieChart from "@/components/IssuePieChart.vue";
-import WorstCellsTable from "@/components/WorstCellsTable.vue";
+import {storeToRefs} from 'pinia';
+import {onMounted, computed, ref} from 'vue';
+import {useCapDataStore} from '../store/capDataStore';
+import PercentageGaugeChart from "@/components/PercentageGaugeChart.vue";
+import SimpleTrendChart from "@/components/SimpleTrendChart.vue";
 
-//    const {page, size, schema, boolOperand, table, filters, sorters} = request.query;
 
 export default {
   name: "Page1",
   components: {
-    WorstCellsTable,
-    IssuePieChart,
-    RegionCountBarChart,
-    AgingPieChart,
+    SimpleTrendChart,
+    PercentageGaugeChart
+
   },
   setup: function () {
+
+    const store = useCapDataStore();
+    const {
+      overallCountAndPercentageTrend,
+      availableYearWeeks,
+      selectedPostYearWeek,
+      selectedPreYearWeek
+    } = storeToRefs(store);
+
+    const preData = computed(() => {
+      return overallCountAndPercentageTrend.value.filter(d => d['year_week'] === selectedPreYearWeek.value);
+    });
+
+    const postData = computed(() => {
+      return overallCountAndPercentageTrend.value.filter(d => d['year_week'] === selectedPostYearWeek.value);
+    });
+
+    onMounted(() => {
+      store.getOverallCountAndPercentage();
+    });
+
+    const availablePostYearWeeks = computed(() => {
+      const indexPre = availableYearWeeks.value.indexOf(selectedPreYearWeek.value);
+      return availableYearWeeks.value.filter((d, i) => i >= indexPre);
+    });
+
+    const preBarColor = '#ffa600';
+    const postBarColor = '#06c506';
+    const defaultBarColor = '#0000FF';
+    const availableMetrics = [
+      {
+        label: 'Total Sectors',
+        value: 'count_total'
+      },
+      {
+        label: 'Total Congested Sectors',
+        value: 'count_congested'
+      },
+      {
+        label: 'Percentage Sectors Congested',
+        value: 'percentage'
+      }
+    ];
+    const selectedMetric = ref(availableMetrics.at(-1));
+
+    return {
+      preData,
+      postData,
+      availableYearWeeks,
+      availablePostYearWeeks,
+      selectedPostYearWeek,
+      selectedPreYearWeek,
+      overallCountAndPercentageTrend,
+      preBarColor,
+      postBarColor,
+      defaultBarColor,
+      availableMetrics,
+      selectedMetric,
+    }
+
 
   },
 };
 </script>
 
-<style>
-
-/*.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {*/
-/*  white-space: normal;*/
-/*  text-overflow: clip;*/
-/*}*/
-.tabulator-col {
-  justify-content: flex-end !important;
-}
-
-
-</style>
+<style></style>

@@ -19,8 +19,8 @@ import {
   PolarComponent,
   TitleComponent, ToolboxComponent,
   TooltipComponent, VisualMapComponent
-} from "echarts/components.js";
-import {CanvasRenderer, SVGRenderer} from "echarts/renderers.js";
+} from "echarts/components";
+import {CanvasRenderer, SVGRenderer} from "echarts/renderers";
 
 export default {
   name: "IssuePieChart",

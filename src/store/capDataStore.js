@@ -1,13 +1,13 @@
-import {ref, computed} from 'vue';
+import {computed, ref} from 'vue';
 import {defineStore} from 'pinia';
 import {
     apiGetAgingCountTrend,
     apiGetAvailableYearWeeks,
-    apiGetIssueCountTrend, apiGetMaxYearWeek,
+    apiGetIssueCountTrend,
     apiGetRegionalCountTrend
 } from "@/api/apiCalls.js";
-import {getRegionalTrendCountChartOptions} from "@/charts/options.js";
 import {agings, issueTags, regions} from "@/constants.js";
+import {apiGetOverallCountAndPercentageTrend} from '../api/apiCalls';
 
 export const useCapDataStore = defineStore('capData', () => {
     // STATES
@@ -17,10 +17,15 @@ export const useCapDataStore = defineStore('capData', () => {
     const worstCellsList = ref([]);
     const availableYearWeeks = ref([]);
     const worstCellsTableFilters = ref([]);
+    const overallCountAndPercentage = ref([]);
 
     const selectedRegions = ref(regions);
     const selectedAgings = ref(agings);
     const selectedIssueTags = ref(issueTags);
+    const latestYearWeek = ref(null);
+    const previosYearWeek = ref(null);
+    const selectedPostYearWeek = ref(null);
+    const selectedPreYearWeek = ref(null);
 
     // GETTERS
     const selectionToParams = computed(() => function () {
@@ -46,6 +51,7 @@ export const useCapDataStore = defineStore('capData', () => {
         };
 
     });
+
     const maxYearWeek = computed(() => {
         if (!availableYearWeeks.value.length) {
             return null;
@@ -73,8 +79,16 @@ export const useCapDataStore = defineStore('capData', () => {
 
     async function getAvailableYearWeeks() {
         const data = (await apiGetAvailableYearWeeks());
-        availableYearWeeks.value = data.map(d => d.year_week);
+        availableYearWeeks.value = data.map(d => d["year_week"]);
+        selectedPostYearWeek.value = availableYearWeeks.value.at(-1);
+        selectedPreYearWeek.value = availableYearWeeks.value.at(-2);
     }
+
+    async function getOverallCountAndPercentage() {
+        overallCountAndPercentage.value = (await apiGetOverallCountAndPercentageTrend(selectionToParams.value()));
+    }
+
+
 
     return {
         selectedAgings,
@@ -84,10 +98,15 @@ export const useCapDataStore = defineStore('capData', () => {
         agingCountTrend,
         issueCountTrend,
         worstCellsList,
+        overallCountAndPercentageTrend: overallCountAndPercentage,
+        availableYearWeeks,
+        selectedPostYearWeek,
+        selectedPreYearWeek,
         getRegionalCountTrend,
         getIssueCountTrend,
         getAgingCountTrend,
         getAvailableYearWeeks,
+        getOverallCountAndPercentage,
         maxYearWeek,
         selectionToParams,
         worstCellsTableFilters,

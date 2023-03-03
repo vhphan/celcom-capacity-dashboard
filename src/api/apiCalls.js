@@ -24,3 +24,8 @@ export const apiGetAvailableYearWeeks = async (params = {}) => {
     const response = (await apiNode.get(`/getAvailableYearWeeks`, {params})).data;
     return response.data;
 }
+
+export const apiGetOverallCountAndPercentageTrend = async (params = {}) => {
+    const response = (await apiNode.get(`/getOverallCountAndPercentageTrend`, {params})).data;
+    return response.data;
+}

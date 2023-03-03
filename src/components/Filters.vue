@@ -1,5 +1,4 @@
 <template>
-
   <div class="q-pa-md">
     <div class="bg-grey-2 q-pa-sm rounded-borders ">
       Regions:
@@ -9,7 +8,10 @@
           v-model="selectedRegions"
       />
     </div>
-    <div class="bg-blue-1 q-pa-sm rounded-borders ">
+
+    <div
+        v-show="['Page2'].includes(currentRouteName)"
+        class="bg-blue-1 q-pa-sm rounded-borders ">
       Agings (Weeks)
       <q-option-group
           class="justify-between"
@@ -18,7 +20,10 @@
           v-model="selectedAgings"
       />
     </div>
-    <div class="bg-red-1 q-pa-sm rounded-borders ">
+
+    <div
+        v-show="['Page2'].includes(currentRouteName)"
+        class="bg-red-1 q-pa-sm rounded-borders ">
       Issue Categories
       <q-option-group
           :options="availableIssueTags"
@@ -39,7 +44,10 @@
       />
     </div>
     <q-separator/>
-    <div class="bg-grey-2 q-pa-sm rounded-borders ">
+    <div
+        v-show="['Page2'].includes(currentRouteName)"
+        class="bg-grey-2 q-pa-sm rounded-borders "
+    >
 
       <q-table
           title="Filters Applied"
@@ -64,19 +72,31 @@ import {useCapDataStore} from "@/store/capDataStore.js";
 import {storeToRefs} from "pinia";
 import {agings, issueTags, regions} from "@/constants.js";
 import {computed} from "vue";
+import {useRoute} from 'vue-router';
+
 
 export default {
   name: "Filters",
   setup() {
     const store = useCapDataStore();
     const {worstCellsTableFilters} = storeToRefs(store);
-    const rows = computed(() => worstCellsTableFilters.value.map(f => {
-      return {
-        field: f.field,
-        type: f.type,
-        value: f.value.join(', ')
-      };
-    }));
+
+    const rows = computed(() => {
+      let finalRows = worstCellsTableFilters.value.map(f => {
+        return {
+          field: f.field,
+          type: f.type,
+          value: f.value.join(', ')
+        };
+      })
+      finalRows = finalRows.filter(r => {
+        if (currentRouteName.value === 'Page1') {
+          return r.field !== 'aging' && r.field !== 'issue_category';
+        }
+        return true;
+      });
+      return finalRows;
+    });
 
     const availableRegions = regions.map(r => ({label: r, value: r}));
     const availableAgings = agings.map(a => ({label: a, value: a}));
@@ -88,7 +108,10 @@ export default {
       store.getRegionalCountTrend();
       store.getIssueCountTrend();
       store.getAgingCountTrend();
+      store.getOverallCountAndPercentage();
     };
+    const route = useRoute()
+    const currentRouteName = computed(() => route.name)
 
     return {
       availableRegions,
@@ -105,6 +128,7 @@ export default {
         {name: 'value', label: 'Value', field: 'value', align: 'left', sortable: true},
       ],
       rows,
+      currentRouteName
     };
 
   }

@@ -16,7 +16,7 @@
         <q-tabs align="left">
           <q-route-tab :to="`${basePath}page1`" label="Page One"/>
           <q-route-tab :to="`${basePath}page2`" label="Page Two"/>
-          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>
+<!--          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>-->
         </q-tabs>
       </q-toolbar>
 
@@ -47,10 +47,8 @@ const leftDrawerOpen = ref(true);
 const toggleLeftDrawer = function () {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+
 const store = useCapDataStore();
-
 store.getAvailableYearWeeks();
-
-
 
 </script>

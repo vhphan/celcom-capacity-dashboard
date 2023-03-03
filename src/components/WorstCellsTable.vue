@@ -1,5 +1,5 @@
 <template>
-  <div ref="tableRef" style="height: calc(100vh - 400px);" ></div>
+  <div ref="tableRef" style="height: calc(100vh - 200px);" ></div>
 </template>
 <script>
 
