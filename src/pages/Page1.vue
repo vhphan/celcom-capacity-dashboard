@@ -12,7 +12,6 @@
         :preBarColor="preBarColor"
         :postBarColor="postBarColor"
         :defaultBarColor="defaultBarColor"
-
     />
   </q-card>
   <div class="q-pa-md row">
@@ -33,6 +32,49 @@
           title="POST: Percentage Congested"
           :chart-color="postBarColor"
       />
+    </q-card>
+    <q-card class="col-4 justify-between" style="display: flex; flex-direction: column;">
+
+      <q-card bordered class="full-height">
+        <q-item class="text-h6 bg-primary text-white">
+          <q-item-label>% Congested Sectors</q-item-label>
+        </q-item>
+        <q-item-section class="text-h4 q-ma-xs " :class="kpiChanges.percentChange >= 0? 'text-negative': 'text-positive'">
+          <span class="q-mx-auto">
+            <q-icon :name="kpiChanges.percentChange >= 0? 'trending_up': 'trending_down'"
+            />
+            {{ kpiChanges.percentChange >= 0 ? "+" : "" }}{{ kpiChanges.percentChange }}%
+          </span>
+        </q-item-section>
+      </q-card>
+
+      <q-card bordered class="full-height">
+        <q-item class="text-h6 bg-primary text-white">
+          <q-item-label>Total Congested Sectors</q-item-label>
+        </q-item>
+        <q-item-section class="text-h4 q-ma-xs " :class="kpiChanges.congestedCountChange >= 0? 'text-negative': 'text-positive'">
+          <span class="q-mx-auto">
+            <q-icon  :name="kpiChanges.congestedCountChange >= 0? 'trending_up': 'trending_down'"
+            />
+            {{ kpiChanges.congestedCountChange >= 0 ? "+" : "" }}{{ kpiChanges.congestedCountChange }}
+          </span>
+        </q-item-section>
+      </q-card>
+
+      <q-card bordered class="full-height">
+        <q-item class="text-h6 bg-primary text-white">
+          <q-item-label>Total Sectors</q-item-label>
+        </q-item>
+        <q-item-section class="text-h4 q-ma-xs " :class="kpiChanges.totalCountChange >= 0? 'text-positive': 'text-negative'">
+          <span class="q-mx-auto">
+            <q-icon :name="kpiChanges.totalCountChange >= 0? 'trending_up': 'trending_down'"
+            />
+            {{ kpiChanges.totalCountChange >= 0 ? "+" : "" }}{{ kpiChanges.totalCountChange }}
+          </span>
+        </q-item-section>
+      </q-card>
+
+
     </q-card>
   </div>
 </template>
@@ -80,8 +122,8 @@ export default {
     });
 
     const preBarColor = '#ffa600';
-    const postBarColor = '#06c506';
-    const defaultBarColor = '#0000FF';
+    const postBarColor = '#237bff';
+    const defaultBarColor = '#d1d1f5';
     const availableMetrics = [
       {
         label: 'Total Sectors',
@@ -98,6 +140,13 @@ export default {
     ];
     const selectedMetric = ref(availableMetrics.at(-1));
 
+    const kpiChanges = computed(() => ({
+          percentChange: (postData.value[0]?.percentage - preData.value[0]?.percentage).toFixed(2),
+          congestedCountChange: (postData.value[0]?.count_congested - preData.value[0]?.count_congested).toFixed(2),
+          totalCountChange: (postData.value[0]?.count_total - preData.value[0]?.count_total).toFixed(2),
+        })
+    )
+
     return {
       preData,
       postData,
@@ -111,6 +160,7 @@ export default {
       defaultBarColor,
       availableMetrics,
       selectedMetric,
+      kpiChanges,
     }
 
 
