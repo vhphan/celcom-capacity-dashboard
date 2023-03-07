@@ -23,7 +23,7 @@ import {useMainStore} from "@/store/mainStore";
 import {storeToRefs} from "pinia";
 import {addSearch, addSizeSelector, loadBasicMap, makeSiteLayers} from "@/composables/basicMap";
 import {debounce} from "quasar";
-import {loadScript} from "@/utils/myFunctions.js";
+import {getCookie, loadScript} from "@/utils/myFunctions.js";
 
 
 export default {
@@ -49,12 +49,12 @@ export default {
     const mapObjReactive = reactive(mapObj);
     const {
       grayOutOffAir,
-      hoveredSiteInfo,
       sectorSize,
       region,
       techLayers,
       techLayersColors,
       layerOpacity,
+      hoveredSiteInfo,
       clickedCellInfo,
       cellToZoomTo,
       techLayersAdded,
@@ -147,7 +147,9 @@ export default {
 
     const toolbarHeight = computed(() => document.getElementById('toolbar')?.offsetHeight || 100);
     const adjustMapHeight = debounce(function () {
-      if (!document.getElementById(mapObj.id)) return;
+      if (!document.getElementById(mapObj.id)) {
+        return;
+      }
       document.getElementById(mapObj.id).style.height = 'calc(100vh - ' + toolbarHeight.value + 'px)';
       if (mapObj.map) {
         mapObj.map.invalidateSize();

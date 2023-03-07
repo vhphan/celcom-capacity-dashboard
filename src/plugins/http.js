@@ -101,7 +101,6 @@ const apiNode = addInterceptor(createInstance(BASE_URL_NODE));
 
 export {apiNode, BASE_URL_NODE};
 
-
 export const useApi = () => {
     const createApi = (loadingState) => addInterceptor(createInstance(BASE_URL), loadingState);
     const createApiNode = (loadingState) => addInterceptor(createInstance(BASE_URL_NODE), loadingState);

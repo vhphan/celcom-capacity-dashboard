@@ -66,7 +66,7 @@ function getClickedFeatureInfo(feature, layer, api, mapStore) {
     // });
     layer.on('mouseout', async function (e) {
 
-    })
+    });
     layer.on('click', async function (e) {
         if (e.target.feature.properties['Cell Name']) {
             let selectedCell = e.target.feature.properties['Cell Name'];
@@ -87,8 +87,8 @@ function getClickedFeatureInfo(feature, layer, api, mapStore) {
     <div style="border: #1D1D1D 1px solid">
         ${cellName}
     </div>
-    `
-    layer.bindTooltip(htmlString)
+    `;
+    layer.bindTooltip(htmlString);
 
 }
 
@@ -249,7 +249,7 @@ function loadBasicMap(mapObj) {
                     function () {
                         loadScript("https://cdn.rawgit.com/gokertanrisever/leaflet-ruler/master/src/leaflet-ruler.js", 'ruler', function () {
                             addRulerToMap();
-                        })
+                        });
                     }
                 );
             }
@@ -259,15 +259,15 @@ function loadBasicMap(mapObj) {
         mapObj.map.zoomControl.setPosition('bottomleft');
         mapObj.lControl = L.control.layers(baseMaps);
 
-    }
+    };
     const invalidateTimer = 50;
     const mapResize = () => {
         setTimeout(() => {
             if (mapObj.map) {
                 mapObj.map.invalidateSize({animate: true});
             }
-        }, invalidateTimer)
-    }
+        }, invalidateTimer);
+    };
     const mapContainer = ref(null);
     return {setupLeafletMap, mapResize, mapContainer};
 }
@@ -287,6 +287,7 @@ function makeSiteLayers({
 
     let masterGroupChildrenLTE = [];
     let masterGroupChildrenNR = [];
+    let masterGroupChildrenGSM = [];
     let masterGroupChildrenOtherLayers = [];
     techLayers.forEach((techLayer, index) => {
         layerGroups[techLayer] = new L.LayerGroup();
@@ -311,21 +312,21 @@ function makeSiteLayers({
                         weight: 1.5,
                         fillOpacity: fillOpacity,
                         fillColor: layerColors[index]
-                    }
+                    };
                 }
                 let finalColor;
                 const isOnAir = ('OnAir' in feature.properties) && (feature.properties['OnAir']);
                 if (isOnAir) {
-                    finalColor = layerColors[index]
+                    finalColor = layerColors[index];
                 } else {
-                    finalColor = '#d3d1d1'
+                    finalColor = '#d3d1d1';
                 }
                 return {
                     color: finalColor,
                     weight: isOnAir ? 1.5 : 0.1,
                     fillOpacity: isOnAir ? fillOpacity : 0.1,
                     fillColor: finalColor
-                }
+                };
             }
         };
 
@@ -335,14 +336,21 @@ function makeSiteLayers({
                 label: techLayer,
                 layer,
             });
-        } else {
+        }
+        if (techLayer.startsWith('N')) {
             masterGroupChildrenNR.push({
                 label: techLayer,
                 layer,
             });
         }
+        if (techLayer.startsWith('G')) {
+            masterGroupChildrenGSM.push({
+                label: techLayer,
+                layer,
+            });
+        }
         layerGroups[techLayer].addLayer(layer);
-    })
+    });
 
     let layerMasterGroup = {
         label: 'Tech Layers / Polygons',
@@ -356,6 +364,11 @@ function makeSiteLayers({
             {
                 label: 'NR',
                 children: masterGroupChildrenNR,
+                selectAllCheckbox: true,
+            },
+            {
+                label: 'GSM',
+                children: masterGroupChildrenGSM,
                 selectAllCheckbox: true,
             },
             {
@@ -394,7 +407,7 @@ function makeSiteLayers({
                     color: polygonLayer.color,
                     weight: polygonLayer.weight,
                     fillOpacity: polygonLayer.fillOpacity,
-                }
+                };
             }
         });
         masterGroupChildrenOtherLayers.push({
@@ -407,7 +420,7 @@ function makeSiteLayers({
             layer.bringToBack();
         }, 10_000);
 
-    })
+    });
 
     const layerCtlTree = L.control.layers.tree(
         null,
@@ -454,7 +467,7 @@ function removeMap(mapObj) {
             choloroplethInfo: {},
             legend: null
         }
-    }
+    };
 }
 
 let lastClickTimout = null;
@@ -478,7 +491,7 @@ function colorCell(layer, color = '#43ef04', timeout = 8000, errorFunc = null, i
             };
             lastClickTimout = setTimeout(function () {
                 // layer.setStyle({ color: '#000', weight: 1 });
-                fn()
+                fn();
             }, timeout);
 
         }
@@ -519,10 +532,10 @@ function addSizeSelector({map, sectorSize, refreshFunc}) {
         let options = '';
         sizes.forEach(size => {
             if (sectorSize === size) {
-                options += `<option value="${size}" selected>${size}</option>`
+                options += `<option value="${size}" selected>${size}</option>`;
                 return;
             }
-            options += `<option value="${size}">${size}</option>`
+            options += `<option value="${size}">${size}</option>`;
         });
         div.innerHTML = `
             <div class="q-pa-xs bg-purple-8 text-white" style="font-size: 1rem">Sector <br/> Size</div>
@@ -530,7 +543,7 @@ function addSizeSelector({map, sectorSize, refreshFunc}) {
             ${options}
             </select>`;
         return div;
-    }
+    };
     dropDown.addTo(map);
 
     // let testDiv = L.control({position: 'topright'});
@@ -542,7 +555,7 @@ function addSizeSelector({map, sectorSize, refreshFunc}) {
     // testDiv.addTo(map);
 
     document.getElementById('sectorSize').addEventListener('change', function () {
-        refreshFunc(this.value)
+        refreshFunc(this.value);
     });
 }
 
