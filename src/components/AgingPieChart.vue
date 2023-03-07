@@ -55,7 +55,18 @@ export default {
     ]);
 
     watch(agingData, (newVal) => {
-      option.value = getPieChartOptions(newVal, 'Aging Category', 'Aging Breakdown');
+      option.value = getPieChartOptions(newVal, 'Aging Category', 'Aging Breakdown', [
+        // '#d3758f',
+        // '#dcc392',
+        '#2e4783',
+        '#82b6e9',
+        '#ff6347',
+        // '#eaf889',
+        '#6699FF',
+        '#ff6666',
+        '#3cb371',
+        '#d5b158',
+      ]);
     });
 
     onMounted(() => {

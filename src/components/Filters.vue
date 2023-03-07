@@ -70,7 +70,7 @@
 <script>
 import {useCapDataStore} from "@/store/capDataStore.js";
 import {storeToRefs} from "pinia";
-import {agings, issueTags, regions} from "@/constants.js";
+import {agings, issueTags, regions} from "@/settings/constants.js";
 import {computed} from "vue";
 import {useRoute} from 'vue-router';
 

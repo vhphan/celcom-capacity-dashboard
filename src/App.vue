@@ -10,6 +10,7 @@ export default {
       document.cookie = "API=" + import.meta.env.VITE_API_KEY + ";";
     }
 
+
   }
 };
 
@@ -22,6 +23,7 @@ export default {
 <style>
 /*@import "tabulator-tables/dist/css/tabulator.min.css";*/
 @import "tabulator-tables/dist/css/tabulator_modern.min.css";
+
 .tabulator {
   font-size: 0.8rem;
 }

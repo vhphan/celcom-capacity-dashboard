@@ -1,14 +1,29 @@
 import axios from 'axios';
 import {debounce, Notify} from "quasar";
-import {colorTrace, getCookie, redirectToLogin} from "../utils/myFunctions";
-import {triggerInfo, triggerNegative} from "../utils/notifications.js";
-import {authLoginUrl} from "../constants.js";
+import {colorTrace, getCookie, redirectToLogin} from "@/utils/myFunctions";
+import {triggerInfo, triggerNegative} from "@/utils/notifications.js";
+import {authLoginUrl} from "@/settings/constants.js";
+import {operator} from "@/settings/constants.js";
 
 const devServer = import.meta.env.VITE_NODE_DEV_SERVER;
 const prodServer = import.meta.env.VITE_NODE_PROD_SERVER;
 const server = import.meta.env.PROD ? prodServer : devServer;
 const BASE_URL_NODE = `${server}/node/celcom-capacity/v1`;
+export const NODE_URL = `${server}/node/${operator}`;
 
+
+const mainPortal = (operator) => {
+    switch (operator) {
+        case 'celcom':
+            return 'https://cmeportal.eprojecttrackers.com';
+        case 'dnb':
+            return 'https://ndo-portal.eprojecttrackers.com';
+        default:
+            throw new Error('Unknown operator');
+    }
+};
+
+const BASE_URL = import.meta.env.DEV ? mainPortal : `https://${window.location.hostname}`;
 
 function createInstance(baseURL) {
     let headers = {
@@ -85,3 +100,10 @@ const addInterceptor = (instance) => {
 const apiNode = addInterceptor(createInstance(BASE_URL_NODE));
 
 export {apiNode, BASE_URL_NODE};
+
+
+export const useApi = () => {
+    const createApi = (loadingState) => addInterceptor(createInstance(BASE_URL), loadingState);
+    const createApiNode = (loadingState) => addInterceptor(createInstance(BASE_URL_NODE), loadingState);
+    return {createApi, createApiNode, BASE_URL_NODE, NODE_URL};
+};

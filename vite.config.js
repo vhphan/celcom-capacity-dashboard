@@ -1,10 +1,10 @@
 // FILE: vite.config.js
-import { defineConfig, loadEnv } from 'vite';
+import {defineConfig, loadEnv} from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
+import {quasar, transformAssetUrls} from '@quasar/vite-plugin';
 import path from 'path';
-import { basePath } from "./src/constants.js";
-import { fileURLToPath, URL } from "url";
+import {basePath} from "./src/settings/constants.js";
+import {fileURLToPath, URL} from "url";
 
 // https://vitejs.dev/config/
 function getBuild() {
@@ -14,12 +14,12 @@ function getBuild() {
     const nowDay = now.getDate();
     const verBuildDate = now.getFullYear() + padTwo(nowMonth) + padTwo(nowDay);
     const verBuildTime = padTwo(now.getHours()) + padTwo(now.getMinutes()) + padTwo(now.getSeconds());
-    return { verBuildDate, verBuildTime };
+    return {verBuildDate, verBuildTime};
 }
 
-export default ({ mode }) => {
-    const { verBuildDate, verBuildTime } = getBuild();
-    process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+export default ({mode}) => {
+    const {verBuildDate, verBuildTime} = getBuild();
+    process.env = {...process.env, ...loadEnv(mode, process.cwd())};
 
     // import.meta.env.VITE_NAME available here with: process.env.VITE_NAME
     // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
@@ -32,7 +32,7 @@ export default ({ mode }) => {
         },
         plugins: [
             vue({
-                template: { transformAssetUrls }
+                template: {transformAssetUrls}
             }),
             quasar({
                 sassVariables: 'src/quasar-variables.sass'

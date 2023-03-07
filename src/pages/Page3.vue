@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <h5 class="q-ma-lg">Page 3</h5>
-  </div>
+  <map-app/>
 </template>
 
 <script>
+import MapApp from "@/components/MapApp.vue";
+
 export default {
-  name: "Page3"
+  name: "Page3",
+  components: {MapApp}
 };
 </script>
 

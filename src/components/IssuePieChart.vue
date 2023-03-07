@@ -10,7 +10,7 @@ import {getPieChartOptions} from "@/charts/options.js";
 import "echarts"; // import echarts core
 import VChart from "vue-echarts"; // import vue-echarts
 import {use} from "echarts/core";
-import { PieChart } from "echarts/charts";
+import {PieChart} from "echarts/charts";
 import {
   DatasetComponent, DataZoomComponent,
   GeoComponent,
@@ -55,7 +55,14 @@ export default {
     ]);
 
     watch(issueData, (newVal) => {
-      option.value = getPieChartOptions(newVal, 'Issue Category', 'Issue Breakdown');
+      option.value = getPieChartOptions(newVal, 'Issue Category', 'Issue Breakdown', [
+        '#ff6666',
+        '#3cb371',
+        '#d5b158',
+        '#82b6e9',
+        '#ff6347',
+        '#a092f1',
+      ]);
     });
 
     onMounted(() => {

@@ -5,8 +5,8 @@
   <div style="display:flex;" class="q-ma-xs row">
     <worst-cells-table class="col-md-8"/>
     <div class="col-md-4 q-pt-lg">
-      <aging-pie-chart class="col-12" style="height: 250px;" />
-      <issue-pie-chart class="col-12" style="height: 250px;"/>
+      <aging-pie-chart class="col-12" style="height: calc((100vh - 350px)/2);"/>
+      <issue-pie-chart class="col-12" style="height: calc((100vh - 350px)/2);"/>
     </div>
   </div>
 </template>

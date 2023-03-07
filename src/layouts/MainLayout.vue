@@ -16,14 +16,15 @@
         <q-tabs align="left">
           <q-route-tab :to="`${basePath}page1`" label="Page One"/>
           <q-route-tab :to="`${basePath}page2`" label="Page Two"/>
-          <!--          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>-->
+          <q-route-tab :to="`${basePath}page3`" label="Page Three"/>
         </q-tabs>
       </q-toolbar>
 
     </q-header>
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
-      <filters/>
+      <map-side-bar v-if="currentRouteName==='Page3'"/>
+      <filters v-else/>
     </q-drawer>
 
     <q-page-container class="q-px-md">
@@ -37,10 +38,12 @@
   </q-layout>
 </template>
 <script setup>
-import {basePath} from "../constants.js";
+import {basePath} from "../settings/constants.js";
 import {computed, ref} from "vue";
 import Filters from "@/components/Filters.vue";
 import {useCapDataStore} from "@/store/capDataStore.js";
+import {useRoute} from "vue-router";
+import MapSideBar from "@/components/MapSideBar.vue";
 
 
 const leftDrawerOpen = ref(true);
@@ -50,4 +53,8 @@ const toggleLeftDrawer = function () {
 
 const store = useCapDataStore();
 store.getAvailableYearWeeks();
+
+const route = useRoute();
+const currentRouteName = computed(() => route.name)
+
 </script>

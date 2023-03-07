@@ -1,4 +1,4 @@
-import string from "tabulator-tables/src/js/modules/Sort/defaults/sorters/string.js";
+import {getNewColorWithMinimumDifference} from "@/utils/colorFuncs.js";
 
 export const getRegionalTrendCountChartOptions = (data) => {
     let allYearWeek = data.map(d => d['Wk Year'] + '-' + d['Wk Num']);
@@ -33,6 +33,27 @@ export const getRegionalTrendCountChartOptions = (data) => {
     });
 
     const option = {
+        color: [
+            '#E01F54',
+            '#001852',
+            // '#f5e8c8',
+            '#b8d2c7',
+            '#c6b38e',
+            '#a4d8c2',
+            '#f3d999',
+            '#d3758f',
+            '#dcc392',
+            '#2e4783',
+            '#82b6e9',
+            '#ff6347',
+            '#a092f1',
+            '#0a915d',
+            '#eaf889',
+            '#6699FF',
+            '#ff6666',
+            '#3cb371',
+            '#d5b158',
+            '#38b6b6'],
         title: {
             text: 'Count of Congested Sectors'
         },
@@ -71,9 +92,34 @@ export const getRegionalTrendCountChartOptions = (data) => {
 
 };
 
-export const getPieChartOptions = (data, seriesName, chartTitle) => {
 
+export const getArrayOfRandomColors = (length) => {
+    let colors = [];
+    for (let i = 0; i < length; i++) {
+        // colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
+        // get a new color that is not too close to any of the existing colors
+        colors.push(getNewColorWithMinimumDifference(colors, 20, '#FFFFFF'));
+    }
+    return colors;
+}
+
+export const getPieChartOptions = (data, seriesName, chartTitle, colors) => {
     return {
+        // color: getArrayOfRandomColors(data.length),
+        color: colors,
+        // color: [
+        //     '#c23531',
+        //     '#2f4554',
+        //     '#61a0a8',
+        //     '#d48265',
+        //     '#91c7ae',
+        //     '#749f83',
+        //     '#ca8622',
+        //     '#bda29a',
+        //     '#6e7074',
+        //     '#546570',
+        //     '#c4ccd3'
+        // ],
         title: {
             top: '0%',
             text: chartTitle,
@@ -98,9 +144,9 @@ export const getPieChartOptions = (data, seriesName, chartTitle) => {
                 radius: ['30%', '60%'],
                 avoidLabelOverlap: false,
                 itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
+                    // borderRadius: 10,
+                    borderColor: '#237bff',
+                    borderWidth: 1
                 },
                 label: {
                     show: false,
@@ -109,7 +155,7 @@ export const getPieChartOptions = (data, seriesName, chartTitle) => {
                 emphasis: {
                     label: {
                         show: true,
-                        fontSize: 40,
+                        fontSize: 20,
                         fontWeight: 'bold'
                     }
                 },

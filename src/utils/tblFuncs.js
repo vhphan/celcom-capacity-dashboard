@@ -25,7 +25,7 @@ export function createTabulator(tabulator, tableRef, tableBuiltRef, tableName, t
                 //response - the JSON object returned in the body of the response.
                 return response; //return the response data to tabulator
             },
-
+            sortMode:"remote",
             filterMode: "remote", //send filter data to the server instead of processing locally
 
 

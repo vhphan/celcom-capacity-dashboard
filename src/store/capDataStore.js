@@ -6,7 +6,7 @@ import {
     apiGetIssueCountTrend,
     apiGetRegionalCountTrend
 } from "@/api/apiCalls.js";
-import {agings, issueTags, regions} from "@/constants.js";
+import {agings, issueTags, regions} from "@/settings/constants.js";
 import {apiGetOverallCountAndPercentageTrend} from '../api/apiCalls';
 
 export const useCapDataStore = defineStore('capData', () => {
